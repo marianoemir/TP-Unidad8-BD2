@@ -99,7 +99,7 @@ sqlite3 -header -column $db ".read movil/semaforo.sql"       # repetir: 0 solici
 | `postgresql/10_snapshot_catalogo.sql`, `11_exportar_snapshot.sql` | Vista `v_snapshot_movil` y exportación | 2.a |
 | `postgresql/casos/`, `verificar_no_cambio.sql` | Cambios del servidor por caso y prueba de que no se tocó nada | 2.c |
 | `heredado/` | Scripts de las Unidades 1 a 7, entrada del code review (ver nota abajo) | 3.c |
-| `docs/` | Informe, spec de Kiro, bitácora de IA y DUIA | 3 y 4 |
+| `docs/` | Informe, spec de Kiro, bitácora de IA, DUIA y `DIVISION_DE_TRABAJO.md` (quién hace qué y en qué orden) | 3 y 4 |
 
 **Nota sobre `heredado/`.** Los scripts están sin modificar, salvo `data.sql`: se reemplazó el usuario con
 nombre real de un integrante por uno inventado (Carlos Rivas), por la regla de datos ficticios.
