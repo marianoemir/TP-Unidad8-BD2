@@ -1,2 +1,109 @@
-# TP-Unidad8-BD2
-Es la historia del apunte, hecha con tu Food Store: el food truck vende en una feria sin señal. Vas a armar la base de la tablet en SQLite, simular la sincronización con PostgreSQL usando el semáforo, y cerrar la capa de datos del proyecto con un mapa, un plan de mantenimiento y una revisión con IA.
+# Food Store · TP N.º 8 — La base de la tablet y el cierre de la capa de datos
+
+Base de Datos II · Tecnicatura Universitaria en Programación (UTN) · 2026.
+El food truck vende en una feria sin señal: la tablet tiene una base **SQLite**, y la sincronización con
+**PostgreSQL** se simula con un semáforo.
+
+> **El móvil propone, el servidor dispone.** La tablet solo consulta y arma borradores. Precio, stock y ventas
+> los decide PostgreSQL. `SIMULADO_APROBADO` **no es una venta**.
+
+## Requisitos
+
+- PostgreSQL 16+ con `psql` (en Windows suele no estar en el PATH: usar la ruta completa, ver abajo).
+- SQLite **3.37 o superior** (tablas `STRICT`). Verificar las dos formas, pueden ser versiones distintas:
+  `sqlite3 --version` y `python -c "import sqlite3; print(sqlite3.sqlite_version)"`.
+- Datos inventados, sin contraseñas ni cadenas de conexión en el repo.
+
+## Orden para crear todo desde cero
+
+Desde PowerShell, **en la raíz del repo** (el CSV y los scripts usan rutas relativas):
+
+```powershell
+$psql = "C:\Program Files\PostgreSQL\17\bin\psql.exe"      # ajustar a tu versión
+$env:PGCLIENTENCODING = "UTF8"
+$db = "movil/foodstore_movil.db"
+
+# 1. PostgreSQL de PRUEBAS: base nueva, armada con los scripts heredados
+& $psql -U postgres -c "CREATE DATABASE foodstore_u8"
+foreach ($f in "schema","objects","data","views") {
+    & $psql -U postgres -d foodstore_u8 -v ON_ERROR_STOP=1 -f "heredado/base_heredada/$f.sql"
+}
+& $psql -U postgres -d foodstore_u8 -f postgresql/10_snapshot_catalogo.sql
+& $psql -U postgres -d foodstore_u8 -f postgresql/verificar_no_cambio.sql      # ANTES: 6 pedidos, huella de stock
+
+# 2. Instantánea → CSV (consigna 2.a)
+& $psql -U postgres -d foodstore_u8 -f postgresql/11_exportar_snapshot.sql
+
+# 3. Base de la tablet desde cero (consignas 1.b y 2.a)
+Remove-Item $db -ErrorAction SilentlyContinue
+sqlite3 $db ".read movil/schema_sqlite.sql"
+sqlite3 $db ".import --csv --skip 1 movil/servidor_snapshot.csv snapshot_servidor"
+sqlite3 -header -column $db ".read movil/cargar_catalogo.sql"                  # anotar la fecha de la copia
+
+# 4. Pruebas de la tablet (consigna 1.c: COMMIT, ROLLBACK, C1, C7)
+sqlite3 -header -column $db ".read movil/pruebas_sqlite.sql"
+```
+
+Los 3 errores de C7 (`CHECK`, `FOREIGN KEY`, `STRICT`) son **esperados**: el script sigue y no deja filas nuevas.
+
+## Los casos C2 a C6 (consigna 2.c)
+
+```powershell
+# 5. Borradores de C2, C3, C4 y C5, con la lista de precios actual
+sqlite3 -header -column $db ".read movil/casos_c2_c5_borradores.sql"
+
+# 6. El SERVIDOR cambia (C2: sube el precio; C4: baja lógica). Nunca la tablet.
+& $psql -U postgres -d foodstore_u8 -f postgresql/casos/c2_subir_precio.sql
+& $psql -U postgres -d foodstore_u8 -f postgresql/casos/c4_baja_logica.sql
+
+# 7. Instantánea NUEVA: se vacía la tabla de paso, se importa y se recarga el catálogo
+& $psql -U postgres -d foodstore_u8 -f postgresql/11_exportar_snapshot.sql
+sqlite3 $db "DELETE FROM snapshot_servidor;"
+sqlite3 $db ".import --csv --skip 1 movil/servidor_snapshot.csv snapshot_servidor"
+sqlite3 -header -column $db ".read movil/cargar_catalogo.sql"
+
+# 8. El semáforo (primera corrida)
+sqlite3 -header -column $db ".read movil/semaforo.sql"
+
+# 9. C2: el cliente acepta el precio nuevo (solicitud nueva) · C6: se reenvía el mismo UUID
+sqlite3 -header -column $db ".read movil/casos_c2_c6_resolucion.sql"
+sqlite3 -header -column $db ".read movil/semaforo.sql"       # evalúa solo la solicitud nueva
+sqlite3 -header -column $db ".read movil/semaforo.sql"       # repetir: 0 solicitudes evaluadas
+
+# 10. PostgreSQL no cambió (pedidos y stock): comparar con el paso 1
+& $psql -U postgres -d foodstore_u8 -f postgresql/verificar_no_cambio.sql
+```
+
+### Resultados esperados
+
+| Caso | Qué pasa | Resultado |
+|---|---|---|
+| C1 | Catálogo con el servidor apagado | 14 productos (no aparecen el 15 ni el 16) |
+| C2 | Muzzarella sube de $3.500 a $4.000 | `CONFLICTO`; tras aceptar, solicitud nueva `SIMULADO_APROBADO` |
+| C3 | 10 Tiramisú, quedan 6 | `RECHAZADO` (stock insuficiente) |
+| C4 | Fugazzeta dada de baja | `RECHAZADO`; sale del catálogo pero la fila queda con `eliminado = 1` |
+| C5 | Sin cambios | `SIMULADO_APROBADO` |
+| C6 | Mismo UUID otra vez | Error de clave primaria; la 2.ª corrida del semáforo evalúa 0 |
+| C7 | Cantidad 0 / producto inexistente | Error; no queda ninguna fila nueva |
+
+## Archivos
+
+| Ruta | Qué es | Consigna |
+|---|---|---|
+| `movil/schema_sqlite.sql` | Cuatro tablas STRICT, índice parcial, vista del catálogo, tabla de paso | 1.b |
+| `movil/pruebas_sqlite.sql` | COMMIT, ROLLBACK, C1, C7 | 1.c |
+| `movil/cargar_catalogo.sql` | `producto_cache` desde la instantánea (UPSERT) | 2.a |
+| `movil/semaforo.sql` | Rojo / amarillo / verde sobre las `PENDIENTE` | 2.b |
+| `movil/casos_c2_c5_borradores.sql`, `casos_c2_c6_resolucion.sql` | Borradores y resolución de los casos | 2.c |
+| `movil/servidor_snapshot.csv`, `movil/foodstore_movil.db` | **Se generan** con los pasos de arriba | 2.a |
+| `postgresql/10_snapshot_catalogo.sql`, `11_exportar_snapshot.sql` | Vista `v_snapshot_movil` y exportación | 2.a |
+| `postgresql/casos/`, `verificar_no_cambio.sql` | Cambios del servidor por caso y prueba de que no se tocó nada | 2.c |
+| `heredado/` | Scripts de las Unidades 1 a 7, entrada del code review (ver nota abajo) | 3.c |
+| `docs/` | Informe, spec de Kiro, bitácora de IA y DUIA | 3 y 4 |
+
+**Nota sobre `heredado/`.** Los scripts están sin modificar, salvo `data.sql`: se reemplazó el usuario con
+nombre real de un integrante por uno inventado (Carlos Rivas), por la regla de datos ficticios.
+
+## Uso de IA
+
+Spec en `docs/kiro/`; bitácora en `docs/bitacora_ia.md`; declaración en `docs/DUIA.md`.
