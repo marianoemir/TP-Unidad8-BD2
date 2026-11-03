@@ -10,19 +10,22 @@ campus. **No hay entregas tardías**: la semana 14 es el segundo parcial.
 
 | Integrante | A su cargo |
 |---|---|
-| **Mariano Chirino** | **Consigna 1** (esquema SQLite `schema_sqlite.sql` y pruebas `pruebas_sqlite.sql`), **consigna 2** (instantánea y CSV, semáforo `semaforo.sql`, casos C2 a C6 y verificación de que PostgreSQL no cambió), **requisitos y diseño en Kiro** (4.a), **armado del informe PDF** (`informe.pdf`), `README.md`, integración del repo, etiqueta `tp8` y unificación de bitácoras |
+| **Mariano Chirino** | **Consigna 1** (esquema SQLite `schema_sqlite.sql` y pruebas `pruebas_sqlite.sql`), **consigna 2** (instantánea y CSV, semáforo `semaforo.sql`, casos C2 a C6 y verificación de que PostgreSQL no cambió), **requisitos y diseño en Kiro** (4.a), integración del repo y, **al final**, el armado del informe PDF (`informe.pdf`), el `README.md`, la unificación de las bitácoras y la etiqueta `tp8` |
 | **Andrés Fabre** | **1.a** (qué datos viajan a la tablet), **3.a** (mapa de la capa de datos: PostgreSQL, MongoDB y SQLite) y **3.b** (plan de mantenimiento como agregado al plan de la Unidad 6). Además la **revisión cruzada de las consignas 1 y 2** en su propio equipo |
-| **Facundo Quiroga** | **3.c** (code review con IA de los scripts de la cursada), **4.b** (borrador de la Declaración de Uso de IA, `DUIA.md`) y la **revisión cruzada del semáforo** con casos propios |
+| **Facundo Quiroga** | **3.c** (code review con IA de los scripts de la cursada) y la **revisión cruzada del semáforo** con casos propios |
 
-**Todos** arman su entorno (H0), y llevan su bitácora individual.
+**Todos** arman su entorno (H0) y completan **su propia bitácora y su propia DUIA** (sección 9).
 
 ## 2. Estado actual (03/11/2026)
 
 | Tarea | Estado |
 |---|---|
-| Repo armado: scripts de `movil/` y `postgresql/`, spec de Kiro en borrador, `README.md` | Hecho en borrador |
-| Corrida completa en la máquina de cada integrante, con salidas guardadas como evidencia | Por hacer (H0 y revisiones cruzadas) |
-| 1.a, 3.a, 3.b, 3.c, informe PDF, bitácoras y DUIA | Por hacer |
+| Consignas 1 y 2 (`movil/` y `postgresql/`) corridas en la máquina de Mariano, con evidencia en `evidencias/`, y subidas a `main` | Hecho |
+| Spec de Kiro (4.a) en `docs/kiro/` y texto de 2.c en `docs/partes/2c_casos.md` | Hecho |
+| Corrida completa en la máquina de Andrés y de Facundo (H0 y revisiones cruzadas) | Por hacer |
+| 1.a, 3.a, 3.b, 3.c | Por hacer |
+| Bitácora y DUIA de cada integrante | Por hacer (cada uno la suya) |
+| Informe PDF y README final | Se dejan para el final |
 
 ### Datos ya definidos (para que nadie espere)
 
@@ -49,9 +52,9 @@ campus. **No hay entregas tardías**: la semana 14 es el segundo parcial.
 | A4 | Revisión cruzada de las consignas 1 y 2 | Andrés | H3 y H4 | Mariano |
 | F1 | Code review con IA de los scripts (3.c): rama `review-final`, agente Plan, tabla de hallazgos | Facundo | H0; para la unidad móvil, H3 y H4 | H6 |
 | F2 | Revisión cruzada del semáforo con casos propios | Facundo | H4 | Mariano |
-| F3 | Borrador de `DUIA.md` (con el formato de la cátedra) | Facundo | Las bitácoras de los tres | H7 |
-| H6 | `informe.pdf` (hasta 6 páginas) | Mariano | A1, A2, A3, F1 y las salidas de H4 | Entrega |
-| H7 | `README.md` final, `bitacora_ia.md` unificada y etiqueta `tp8` | Mariano | Bitácoras individuales y F3 | Entrega |
+| B1 | Bitácora individual y DUIA individual (4.b) | Cada uno | Lo que hizo cada uno; plantilla de bitácora y `duia_mariano.md` como modelo de formato | H7 |
+| H6 | `informe.pdf` (hasta 6 páginas), **al final** | Mariano | A1, A2, A3, F1 y las salidas de H4 | Entrega |
+| H7 | `README.md` final, `bitacora_ia.md` unificada y etiqueta `tp8`, **al final** | Mariano | B1 de los tres | Entrega |
 
 ```
 H0 entorno (los 3)
@@ -90,16 +93,18 @@ Cada uno anota en su bitácora las versiones y los problemas del armado.
 
 ## 5. Qué hace cada uno, en detalle
 
+Además de lo de cada sección, **los tres** completan su bitácora y su DUIA individuales (sección 9).
+
 ### Mariano
 
 1. Escribir en Kiro `requirements.md` (cuatro requisitos EARS, cada uno ligado a su caso), `design.md` y `tasks.md`
    **antes** de dar por cerrados los scripts.
 2. Dejar andando `movil/` y `postgresql/` (consignas 1 y 2) y avisar a los otros cuando el esquema y el semáforo estén
    estables.
-3. Armar `informe.pdf` (hasta 6 páginas) con: 1.a, 2.c (comando, resultado y una o dos oraciones por caso, más la
+3. **Al final**, armar `informe.pdf` (hasta 6 páginas) con: 1.a, 2.c (comando, resultado y una o dos oraciones por caso, más la
    consulta que muestra que PostgreSQL no cambió y la oración de C6 sobre dónde iría la protección real), 3.a, 3.b y
    3.c. Cada valor del informe debe tener evidencia guardada.
-4. `README.md` con el orden para crear todo desde cero, `bitacora_ia.md` unificada y etiqueta `tp8` al final.
+4. **Al final**, `README.md` con el orden para crear todo desde cero, `bitacora_ia.md` unificada a partir de las individuales (las DUIA no se unifican), y etiqueta `tp8`.
 
 ### Andrés
 
@@ -111,7 +116,7 @@ Cada uno anota en su bitácora las versiones y los problemas del armado.
    la restauración; qué hacen las tablets si se restaura un respaldo viejo de PostgreSQL; cada cuánto y quién revisa
    las solicitudes en `CONFLICTO` o `RECHAZADO`.
 4. **Revisión cruzada (A4):** armar todo desde cero en su máquina siguiendo el `README.md` y comprobar que la salida de
-   cada caso coincide con la tabla de resultados esperados y que `verificar_no_cambio.sql` da lo mismo antes y después.
+   cada caso coincide con la tabla de resultados esperados que `verificar_no_cambio.sql` da lo mismo antes y después, y que `postgresql/verificar_vista_snapshot.sql` y `movil/verificar_vistas_tablet.sql` (Paso 5 del protocolo) dan 0 filas.
 
 ### Facundo
 
@@ -123,7 +128,7 @@ Cada uno anota en su bitácora las versiones y los problemas del armado.
    fundamento**. Las correcciones van en commits separados y después se vuelve a correr todo desde una base vacía.
 3. **Revisión cruzada del semáforo (F2):** correr `semaforo.sql` con casos propios además de C2 a C6 (por ejemplo un
    producto que ya no está en la instantánea, o un borrador con un rojo y un amarillo a la vez) y anotar qué pasó.
-4. **`DUIA.md`:** completar el borrador con el formato de la cátedra, a partir de lo que cada uno anotó en su bitácora.
+4. **Su propia bitácora y DUIA** (sección 9), igual que los otros dos.
 
 ## 6. Revisión cruzada
 
@@ -163,12 +168,26 @@ Por eso, antes de armar el `.zip`:
 - En Windows, Git puede marcar archivos como modificados solo por el fin de línea (CRLF/LF). Si pasa, no los
   commitees (se arregla con `git config core.autocrlf true`).
 
-## 9. Bitácora y uso de IA
+## 9. Bitácora y DUIA (cada uno la suya)
 
-- **Cada integrante arma la suya**, en `docs/bitacoras/bitacora_<nombre>.md`, a partir de la plantilla individual.
-  Al final, Mariano las unifica en `docs/bitacora_ia.md`, comparando cada fila contra la evidencia del repo.
-- Se anota lo que realmente pasó, incluidos los casos en que la IA **no** se equivocó. Las respuestas se resumen;
-  nunca se anotan contraseñas ni cadenas de conexión.
-- **Todo uso de IA se declara** (Kiro, OpenCode u otras herramientas). Cada script generado con IA se lee línea por
-  línea y se prueba sobre una copia de la base antes de incorporarlo.
-- La bitácora final tiene al menos tres entradas, y al menos una con algo **descartado** y su motivo.
+Cada integrante completa **las dos**, con lo que hizo en su parte:
+
+| Documento | Qué es | Dónde queda |
+|---|---|---|
+| **Bitácora individual** | El registro detallado de lo que hizo y por qué: cada interacción con IA (qué se pidió, qué se aceptó, qué se descartó y por qué), los problemas y las decisiones. | `docs/bitacoras/bitacora_<nombre>.md`, a partir de la plantilla |
+| **DUIA individual** | La Declaración de Uso de IA: el resumen formal de qué herramientas usó, para qué, qué se aceptó o descartó y cómo se verificó en el motor. Una por persona, **sin unificar**. | `docs/duia_<nombre>.md`, con el formato de `duia_mariano.md`. `docs/DUIA.md` es solo el índice de las tres |
+
+- **Las bitácoras sí se unifican** al final en `docs/bitacora_ia.md`, comparando cada fila contra la evidencia del repo.
+  Las DUIA se quedan como tres archivos.
+- Se anota lo que realmente pasó, incluidos los casos en que la IA **no** se equivocó, y se distingue entre lo que **propuso
+  la IA** y lo que fue una **decisión de diseño propia**. Las respuestas se resumen; nunca se anotan contraseñas ni cadenas
+  de conexión.
+- **Todo uso de IA se declara** (Kiro, OpenCode, Claude, NotebookLM u otras herramientas). Cada script generado con IA se
+  lee línea por línea y se prueba sobre una copia de la base antes de incorporarlo.
+- La bitácora unificada tiene al menos tres entradas, y al menos una con algo **descartado** y su motivo.
+
+## 10. Protocolo de seguridad
+
+El protocolo del proyecto (`docs/protocolo_seguridad.md`) sigue vigente en el TP8: copia descartable, transacción antes de
+confirmar, respaldo antes de cambios estructurales y verificación de equivalencia de las vistas nuevas. Su última sección
+explica cómo se aplica a esta entrega.

@@ -25,7 +25,7 @@ Formato de cada entrada: **qué se pidió · qué se aceptó · qué se descart�
 - **Qué se aceptó:** el esquema del apunte con los agregados (CHECK de motivo, `evaluada_en`, tabla de paso
   `snapshot_servidor`); el semáforo con `LEFT JOIN` y tratamiento explícito del producto inexistente; la recarga del
   catálogo con `ON CONFLICT DO UPDATE`.
-- **Qué se descartó y por qué:** `INSERT OR REPLACE` para recargar el catálogo (borra la fila y falla con la clave foránea
+- **Alternativas evaluadas y descartadas (decisiones de diseño, no propuestas de la IA):** `INSERT OR REPLACE` para recargar el catálogo (borra la fila y falla con la clave foránea
   activa si un borrador la usa; además perdería la lápida de C4); un `UNIQUE` simple sobre `cola_sync.id_local` (impediría
   reenviar tras un CONFLICTO: se mantiene el índice parcial).
 - **Cómo se comprobó:** se corrió todo de punta a punta sobre PostgreSQL 16 y SQLite 3.45 (C1 a C7, casos borde: producto
