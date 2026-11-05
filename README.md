@@ -1,5 +1,20 @@
 # Food Store · TP N.º 8 — La base de la tablet y el cierre de la capa de datos
 
+[![Repositorio en GitHub](https://img.shields.io/badge/GitHub-TP--Unidad8--BD2-181717?logo=github&logoColor=white)](https://github.com/marianoemir/TP-Unidad8-BD2)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-336791?logo=postgresql&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-3.37%2B-003B57?logo=sqlite&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1-5391FE?logo=powershell&logoColor=white)
+
+> 📦 **Repositorio del trabajo:** [github.com/marianoemir/TP-Unidad8-BD2](https://github.com/marianoemir/TP-Unidad8-BD2) · etiqueta de entrega: `tp8`
+
+**Grupo:** Lobos Solitarios
+
+| Integrante | Usuario de GitHub |
+|---|---|
+| Mariano Chirino | `marianoemir` |
+| Andrés Fabre | `andresfabre27` |
+| Facundo Quiroga | `Buhonero009` |
+
 Base de Datos II · Tecnicatura Universitaria en Programación (UTN) · 2026.
 El food truck vende en una feria sin señal: la tablet tiene una base **SQLite**, y la sincronización con
 **PostgreSQL** se simula con un semáforo.
@@ -95,7 +110,7 @@ sqlite3 -header -column $db ".read movil/semaforo.sql"       # repetir: 0 solici
 | `movil/cargar_catalogo.sql` | `producto_cache` desde la instantánea (UPSERT) | 2.a |
 | `movil/semaforo.sql` | Rojo / amarillo / verde sobre las `PENDIENTE` | 2.b |
 | `movil/casos_c2_c5_borradores.sql`, `casos_c2_c6_resolucion.sql` | Borradores y resolución de los casos | 2.c |
-| `movil/servidor_snapshot.csv`, `movil/foodstore_movil.db` | **Se generan** con los pasos de arriba | 2.a |
+| `movil/servidor_snapshot.csv`, `movil/foodstore_movil.db` | Se generan con los pasos de arriba; también están versionados | 2.a |
 | `postgresql/10_snapshot_catalogo.sql`, `11_exportar_snapshot.sql` | Vista `v_snapshot_movil` y exportación | 2.a |
 | `postgresql/casos/`, `verificar_no_cambio.sql` | Cambios del servidor por caso y prueba de que no se tocó nada | 2.c |
 | `postgresql/verificar_vista_snapshot.sql`, `movil/verificar_vistas_tablet.sql` | Equivalencia de la vista con la tabla y de la vista de la tablet con `producto_cache` (protocolo de seguridad, paso 5) | 2.a |
@@ -103,7 +118,7 @@ sqlite3 -header -column $db ".read movil/semaforo.sql"       # repetir: 0 solici
 | `postgresql/verificar_hallazgos_3c.sql` | Comprobación de los hallazgos H01 y R1 del code review. **Solo en una copia** de la base | 3.c |
 | `evidencias/` | Salidas de cada comando (01 a 12: C1 a C7; 13 y 14: vistas; 15 a 17: code review; 18 y 19: casos borde del semáforo) | todas |
 | `heredado/` | Scripts de las Unidades 1 a 7, entrada del code review (ver nota abajo) | 3.c |
-| `docs/` | Informe, spec de Kiro, bitácora de IA, DUIA y `DIVISION_DE_TRABAJO.md` (quién hace qué y en qué orden) | 3 y 4 |
+| `docs/` | `informe.pdf` (1.a, 2.c, 3.a, 3.b, 3.c), `kiro/` (spec), `bitacora_ia.md`, `DUIA.md` y `DIVISION_DE_TRABAJO.md` (quién hace qué y en qué orden) | 3 y 4 |
 
 **Nota sobre `heredado/`.** Los scripts están sin modificar, salvo `data.sql`: se reemplazó el usuario con
 nombre real de un integrante por uno inventado (Carlos Rivas), por la regla de datos ficticios.
