@@ -8,7 +8,7 @@ las bitácoras individuales, en `docs/bitacoras/`.
 | Integrante | Declaración individual | Resumen |
 |---|---|---|
 | Mariano Chirino | [`duia_mariano.md`](duia_mariano.md) | Claude (versión web), NotebookLM y Kiro. No usó OpenCode |
-| Andrés Fabre | [`duia_andres.md`](duia_andres.md) | Ver su declaración |
+| Andrés Fabre | [`duia_andres.md`](duia_andres.md) | Gemini (Gemini 3 Flash, web, plan gratuito) para redactar 1.a, 3.a y 3.b y diagnosticar errores de CLI |
 | Facundo Quiroga | [`duia_facundo.md`](duia_facundo.md) | OpenCode (agente Plan) para el code review de la 3.c |
 
 **Criterio de este documento:** lo que cada integrante no dejó escrito (por ejemplo, el modelo y el prompt de OpenCode, o los logs de una corrida)
