@@ -63,3 +63,28 @@ Esta nota la agrega Mariano al integrar el PR #1. El texto anterior es de André
 - **Revisión cruzada A4.** Los resultados que informa Andrés (16/16 sin diferencias en `verificar_vista_snapshot.sql`; 6 pedidos, 13 detalles,
   stock 454 y huella `89f8351d0162e23ef1473f32b05ce221` en `verificar_no_cambio.sql`) coinciden con los de Mariano. Las pruebas de la tablet, los casos
   C2 a C6 y `verificar_vistas_tablet.sql` no figuran en esta bitácora: los corrió Mariano y sus salidas están en `evidencias/`.
+
+---
+
+## Actualización de Andrés — 05/11/2026
+
+### Sesión 4: H0 y revisión cruzada completa (A4)
+
+- **Entorno comprobado:** PostgreSQL / `psql` 17.11; `sqlite3` CLI 3.54.1; biblioteca SQLite de Python 3.50.4. Los tres cumplen el mínimo de SQLite 3.37+ y PostgreSQL 16+.
+- **H0:** una base de prueba creada desde `schema.sql` → `objects.sql` → `data.sql` → `views.sql` dio los conteos requeridos: **6 usuarios / 16 productos / 6 pedidos**.
+- **A4 ejecutada desde cero:** se creó una copia descartable del servidor y una base SQLite temporal, sin modificar `movil/foodstore_movil.db` ni la base de trabajo del equipo. La salida completa está en `evidencias/20_andres_revision_a4_completa.txt`.
+- **Resultado de 1.c:** `pruebas_sqlite.sql` dejó el borrador confirmado en 1 / 2 / 1 (borradores / ítems / solicitudes); el `ROLLBACK` no dejó la segunda operación; C1 mostró 14 productos disponibles sin conexión al servidor; y C7 produjo los errores esperados de `CHECK`, clave foránea y `STRICT`, conservando 1 / 2 filas.
+- **Resultado de 2.c:** C2 dio `CONFLICTO` y, luego de aceptar el precio, la nueva solicitud dio `SIMULADO_APROBADO`; C3 y C4 dieron `RECHAZADO`; C5 dio `SIMULADO_APROBADO`; C6 rechazó el UUID repetido por clave primaria. La tercera corrida del semáforo evaluó 0 solicitudes pendientes.
+- **Vistas y no cambio:** `verificar_vista_snapshot.sql` dio 16 / 16 filas, 0 diferencias y las 7 columnas esperadas sin datos de usuarios. `verificar_vistas_tablet.sql` dio 16 / 16 filas de instantánea/cache, 13 / 13 del catálogo visible y 0 diferencias. Al final, `verificar_no_cambio.sql` dio 6 pedidos, 13 detalles, stock total 454 y huella `89f8351d0162e23ef1473f32b05ce221`.
+
+### Sesión 5: Revisión de 3.c
+
+- **Actividad:** revisión cruzada de `docs/partes/3c_code_review.md` y de las evidencias 15 a 17, repetida en una copia descartable para los hallazgos que usan PostgreSQL.
+- **Hallazgos comprobados:** H36 queda correctamente **descartado**: los bloques de C7 hacen `ROLLBACK` y no dejan filas; H04 queda correctamente **descartado con fundamento**: con 13 filas el plan secuencial es más barato, aunque el índice compuesto puede usarse si se deshabilita el escaneo secuencial; H01 y R1 quedan correctamente **aceptados**: el procedimiento admite un producto de categoría dada de baja y un producto repetido produce `SQLSTATE 23505` sin mensaje de negocio.
+- **Evidencia propia:** `evidencias/21_andres_revision_3c.txt`. En la copia limpia de esta revisión H01 mostró 3 lápidas (dos productos de la categoría 5 más el producto 16 ya eliminado); las 4 lápidas de `evidencias/16` incluyen además la baja lógica de C4, por lo que no hay contradicción.
+
+### Registro de IA de esta actualización
+
+| Fecha / hito | Herramienta / agente | Solicitud | Decisión y comprobación |
+|---|---|---|---|
+| **05/11/2026 (A4 y revisión 3.c)** | OpenCode / asistente GPT-5.6 Terra | Revisar el estado real de mi parte, ejecutar A4 desde cero y contrastar 3.c con sus evidencias. | **Aceptado tras prueba directa.** Se usaron copias descartables y se guardaron las salidas 20 y 21. No se modificaron scripts funcionales. |
