@@ -43,7 +43,8 @@ Todo se probó en mi máquina (Windows PowerShell 5.1): PostgreSQL 17.10 con la 
 
 1. Corrida completa de C1 a C7 con las salidas guardadas en `evidencias/01` a `12`.
 2. Prueba de que PostgreSQL no cambió: `verificar_no_cambio.sql` antes y después, con la misma huella de stock `89f8351d0162e23ef1473f32b05ce221`.
-3. Pendiente de correr y guardar como evidencia: `postgresql/verificar_vista_snapshot.sql` y `movil/verificar_vistas_tablet.sql` (Paso 5 del protocolo de seguridad). *(Marcar como hecho cuando estén en `evidencias/`.)*
+3. Paso 5 del protocolo de seguridad: `postgresql/verificar_vista_snapshot.sql` y `movil/verificar_vistas_tablet.sql`, con las salidas en `evidencias/13` y `14`.
+4. Comprobación de los hallazgos de la 3.c de Facundo (H36, H01, H04 y R1) sobre una copia de la base: salidas en `evidencias/15` a `17` y script `postgresql/verificar_hallazgos_3c.sql`.
 
 Ninguna propuesta de la IA se incorporó sin leerla y correrla.
 
