@@ -2,8 +2,6 @@
 
 Registro de lo que hice y por qué, para poder volver a consultarlo. Se unifica al final en `docs/bitacora_ia.md`.
 
-> **Borrador.** Lo marcado con `[completar]` no lo sé con certeza y tiene que confirmarlo Mariano (fechas, prompts exactos). No se dejó nada inventado.
-
 ## Mi parte
 
 Según `DIVISION_DE_TRABAJO.md`:
@@ -24,9 +22,9 @@ Según `DIVISION_DE_TRABAJO.md`:
 
 | Prompt enviado a la IA | Respuesta relevante recibida (resumida) | Validación o corrección humana aplicada |
 |---|---|---|
-| Kiro: generar `requirements.md`, `design.md` y `tasks.md` `[completar prompt]` | Spec completa, pero escrita **después** de los scripts (el enunciado pide lo contrario; está declarado). | Corregí `requirements.md` (el semáforo no marca `eliminado` en `producto_cache`; eso lo hace la recarga) y `design.md` (exportaba con `COPY producto` en vez de `v_snapshot_movil`, inventaba un transporte, tenía invertida la fila de booleanos y decía que la transacción hace rollback sola). Descarté las pruebas de propiedades con Hypothesis y el límite de 255 caracteres en `motivo`. |
-| Claude: revisar lo que generó Kiro contra los scripts y las evidencias `[completar prompt]` | Detectó los errores anteriores y que la tabla de pruebas del diseño no mencionaba `pruebas_sqlite.sql` (C1 y C7). | Se corrigió el diseño. |
-| Claude: revisar el PR #1 de Andrés (clonar la rama, leer y probar) `[completar prompt]` | Sus 1.a, 3.a y 3.b tenían columnas inexistentes en `producto`, la cola ubicada en PostgreSQL, MongoDB descripto como metadatos de productos y SQLite con «autoridad local». El PR traía además `sqlite/`, dos `tp8_database.db` y un `foodstore_movil.db` vacío. | Verifiqué cada dato contra `schema.sql` y `esquema_documental.md`. Descarté `sqlite/`, los `.db` de ejemplo y el `.db` vacío (habría pisado la base con la evidencia de C2 a C6). Reescribí las tres partes. |
+| Kiro: generar `requirements.md`, `design.md` y `tasks.md` | Spec completa, pero escrita **después** de los scripts (el enunciado pide lo contrario; está declarado). | Corregí `requirements.md` (el semáforo no marca `eliminado` en `producto_cache`; eso lo hace la recarga) y `design.md` (exportaba con `COPY producto` en vez de `v_snapshot_movil`, inventaba un transporte, tenía invertida la fila de booleanos y decía que la transacción hace rollback sola). Descarté las pruebas de propiedades con Hypothesis y el límite de 255 caracteres en `motivo`. |
+| Claude: revisar lo que generó Kiro contra los scripts y las evidencias | Detectó los errores anteriores y que la tabla de pruebas del diseño no mencionaba `pruebas_sqlite.sql` (C1 y C7). | Se corrigió el diseño. |
+| Claude: revisar el PR #1 de Andrés (clonar la rama, leer y probar) | Sus 1.a, 3.a y 3.b tenían columnas inexistentes en `producto`, la cola ubicada en PostgreSQL, MongoDB descripto como metadatos de productos y SQLite con «autoridad local». El PR traía además `sqlite/`, dos `tp8_database.db` y un `foodstore_movil.db` vacío. | Verifiqué cada dato contra `schema.sql` y `esquema_documental.md`. Descarté `sqlite/`, los `.db` de ejemplo y el `.db` vacío (habría pisado la base con la evidencia de C2 a C6). Reescribí las tres partes. |
 | Claude: qué decirle a Andrés sobre la fila de MongoDB de la 3.a | Propuso la fila (colección `pedidos` de `foodstore_nosql`, copia de lectura, PostgreSQL manda, no viaja a la tablet) y avisó que MongoDB tiene 7 pedidos y `foodstore_u8` tiene 6. | Usé la fila como base de la `3a`. |
 | Claude: revisar mi `3a` corregida | Detectó que seguía diciendo «5 pedidos migrados» (valor arrastrado del borrador de Andrés) cuando `esquema_documental.md` dice 7: 1, 2, 3, 5 y 6 de `data.sql` más el 7 y el 8 de prueba. | Corregido a 7 y subido en un commit aparte (`5f073d6`). Mi propia corrección había arrastrado el error: lo verifiqué recién después. |
 | Claude: pasos para integrar el PR #1 y cerrar el push rechazado | Plan: mergear desde la web de GitHub, corregir en un commit y, cuando el push fue rechazado, registrar el merge remoto con `git merge -s ours`. Primero pidió comprobar con `git diff --stat main origin/main` que la diferencia era solo lo que se quería descartar. | Lo comprobé y apliqué. Resultado: `main` quedó sin `sqlite/` ni `.db` vacío, con el `.db` en 16 y 6. |
@@ -59,7 +57,7 @@ Según `DIVISION_DE_TRABAJO.md`:
 | 04/11/2026 | `git status` mostraba modificados `.gitattributes`, `.kiro/.../.config.kiro` y 13 archivos de `evidencias/` | Cambios de fin de línea de Windows (en `.gitattributes` la regla quedó con un `\r`). Comprobé con `git diff --ignore-space-at-eol --stat` que en `evidencias/` no había diferencias de contenido | `git restore` de esos archivos; no se commitearon |
 | 04/11/2026 | `git push` rechazado (`fetch first`) | El merge hecho desde la web creó en GitHub un commit que yo no tenía, con el `.db` vacío, `sqlite/` y los borradores de Andrés | `git merge -s ours origin/main` para registrar ese commit sin traer sus archivos; luego push |
 | 04/11/2026 | La `3a` decía 5 pedidos migrados a MongoDB | Arrastré el valor del borrador de Andrés sin contrastarlo con `esquema_documental.md` | Corregido a 7 y subido |
-| `[completar fecha]` | Dudé de las frecuencias de la `3b` (respaldo diario, prueba semanal) porque el plan de la U6 no estaba en el repo | Revisé primero solo el informe y el protocolo, que no las fijan. En un primer ajuste quité la «prueba semanal» y escribí que el plan no fijaba frecuencia: era un error, porque `SPEC_U6.md` sí la fija | Con `SPEC_U6.md` a la vista: diario para el respaldo y semanal para la restauración de prueba, igual que el borrador de Andrés. Restauré el «semanal» en la `3b` |
+| 04/11/2026 | Dudé de las frecuencias de la `3b` (respaldo diario, prueba semanal) porque el plan de la U6 no estaba en el repo | Revisé primero solo el informe y el protocolo, que no las fijan. En un primer ajuste quité la «prueba semanal» y escribí que el plan no fijaba frecuencia: era un error, porque `SPEC_U6.md` sí la fija | Con `SPEC_U6.md` a la vista: diario para el respaldo y semanal para la restauración de prueba, igual que el borrador de Andrés. Restauré el «semanal» en la `3b` |
 
 ## Decisiones tomadas
 
