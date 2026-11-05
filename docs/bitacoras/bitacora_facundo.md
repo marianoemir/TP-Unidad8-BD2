@@ -1,53 +1,54 @@
-# Bitácora Individual de Trabajo (TP8)
-**Integrante:** Facundo  
-**Rama de trabajo:** `review-final`  
-**Entorno de trabajo:** PostgreSQL `foodstore_u8` (Servidor) y SQLite `foodstore_movil.db` (Móvil)
+# Bitácora individual de trabajo (TP8) — Facundo Quiroga
+
+**Integrante:** Facundo Quiroga
+**Rama de trabajo:** `review-final`
+**Entorno:** PostgreSQL `foodstore_u8` (servidor) y SQLite `foodstore_movil.db` (móvil)
+
+> Texto de Facundo (PR #2) con correcciones de Mariano Chirino del 05/11/2026. Lo corregido está marcado con *[corregido]*;
+> lo que no consta por escrito está en la sección «Nota de revisión» al final.
 
 ---
 
-## 1. Verificación del Entorno e Hito H0
+## 1. Verificación del entorno e hito H0
 
-* **Entorno Python y SQLite CLI:**
-  - Se verificó el entorno Python local ejecutando `python -c "import sqlite3; print(sqlite3.sqlite_version)"`, confirmando la versión **3.54.1** (cumpliendo con el estándar superior a 3.37 necesario para la directiva `STRICT`).
-  - Se configuró la base de datos de la tablet `foodstore_movil.db` dentro del directorio `movil/` aplicando el esquema estricto (`schema_sqlite.sql`).
-  - Se importó con éxito el catálogo inicial desde `servidor_snapshot.csv` utilizando el script `cargar_catalogo.sql`.
+- Se verificó la versión de SQLite con `python -c "import sqlite3; print(sqlite3.sqlite_version)"`: **3.54.1**, mayor que la 3.37 que exige `STRICT`.
+  *[corregido]* Eso mide la librería de Python; la del CLI `sqlite3` es otra medición (el README avisa que pueden diferir).
+- Se creó `foodstore_movil.db` en `movil/` con `schema_sqlite.sql` y se importó el catálogo desde `servidor_snapshot.csv` con `cargar_catalogo.sql`.
+- Se corrió `pruebas_sqlite.sql`: `integrity_check` dio `ok` y aparecieron los tres errores esperados de C7
+  (`CHECK constraint failed`, `FOREIGN KEY constraint failed`, `cannot store TEXT value in INTEGER column`), sin dejar filas nuevas.
 
-* **Pruebas de Integridad y Restricciones:**
-  - Se corrieron las pruebas automatizadas (`pruebas_sqlite.sql`).
-  - Se validó la respuesta `integrity_check | ok`.
-  - Se constataron los fallos controlados esperados para pruebas negativas (`FOREIGN KEY constraint failed`, `CHECK constraint failed`, `cannot store TEXT value in INTEGER column`), confirmando que la base SQLite rechaza datos corruptos o de formato incorrecto.
+## 2. Code review de scripts (consigna 3.c)
 
----
+- Se creó la rama `review-final` y se revisó el conjunto de scripts con el agente Plan de **OpenCode**.
+- Cada observación se llevó al motor antes de decidir. Detalle en `docs/partes/3c_code_review.md`; evidencias `15` a `17`.
 
-## 2. Code Review de Scripts (Consigna 3.c)
+*[corregido]* Resultado final de los hallazgos (el borrador tenía H36 como aceptado):
 
-* **Metodología:**
-  - Se creó y seleccionó la rama `review-final`.
-  - Se analizó el conjunto de scripts mediante el agente Plan de **OpenCode** para la inspección estática del código.
-  - Cada observación fue re-evaluada y comprobada empíricamente en el motor correspondiente antes de determinar su resolución.
+1. **H36** (U8, `movil/pruebas_sqlite.sql`) — la IA dijo que un `COMMIT` tras un error dejaría un borrador a medias. **Descartado:** el script da 1/2/1 antes y después de C7 y cada bloque de C7 termina en `ROLLBACK`.
+2. **H01** (base heredada, vista `v_snapshot_movil` contra `sp_crear_pedido`) — **aceptado:** el procedimiento acepta pedidos de una categoría dada de baja.
+3. **H04** (base heredada, `detalle_pedido`) — **descartado con fundamento:** con 13 filas no hay mejora y `conventions.md` no permite agregar índices.
+4. **R1** (base heredada, `sp_crear_pedido`) — **aceptado:** un producto repetido en `p_items` falla con `SQLSTATE 23505` sin mensaje de negocio.
 
-* **Hallazgos Principales:**
-  1. **H36 (Unidad 8 - `movil/pruebas_sqlite.sql`):** Se identificó que el CLI de SQLite no ejecuta un `ROLLBACK` automático ante un fallo de restricción, provocando que el `COMMIT` subsecuente genere transacciones parciales. Decisión: *Aceptado y documentado*.
-  2. **H01 (Unidad 1 - `postgresql/10_snapshot_catalogo.sql` vs `heredado/base_heredada/objects.sql`):** Se detectó asimetría entre la vista de snapshot y el procedimiento almacenado `sp_crear_pedido` respecto a categorías dadas de baja. Decisión: *Aceptado y documentado*.
-  3. **H04 (Unidad 1 - `heredado/base_heredada/schema.sql`):** Se observó la ausencia de índice por `producto_id` en `detalle_pedido`. Decisión: *Descartado con fundamento* debido a la convención estricta del proyecto de no alterar índices en la base heredada.
+## 3. Revisión del semáforo y casos propios (tarea F2)
 
-* **Registro:** Se volcó el detalle completo de la evaluación en `docs/partes/3c_code_review.md`.
+- Se revisó `movil/semaforo.sql` sobre los casos C2 a C6. *[corregido]* Los estados que produce son `CONFLICTO` (amarillo: cambió un precio),
+  `RECHAZADO` (rojo: producto inexistente, no disponible, dado de baja o sin stock) y `SIMULADO_APROBADO` (verde). `PENDIENTE` es el estado de entrada:
+  solo se evalúan las solicitudes pendientes.
+- Caso propio: se insertó un borrador de prueba y la base rechazó `item_borrador.precio_centavos_visto` nulo con `NOT NULL constraint failed`.
+  *[corregido]* Esto verifica el esquema (`STRICT` y `NOT NULL`), no la lógica del semáforo: **no cuenta como caso del semáforo**.
 
----
+## 4. Próximos pasos *[corregido]*
 
-## 3. Revisión del Semáforo y Casos de Prueba Propios (Tarea F2)
-
-* **Casos Estándar C2 a C6:**
-  - Se verificó el funcionamiento del script `movil/semaforo.sql` procesando solicitudes pendientes y evaluando estados de sincronización (`PENDIENTE`, `RECHAZADO`, `CONFLICTO`).
-
-* **Prueba de Caso Propio:**
-  - Se ensayó la inserción de un borrador de prueba respetando las restricciones de tipo `STRICT` (UUID de 36 caracteres, `usuario_id_servidor`, `forma_pago` y captura de `precio_centavos_visto`).
-  - Se corroboró que el motor aplica correctamente las restricciones de no-nulidad (`NOT NULL constraint failed: item_borrador.precio_centavos_visto`) asegurando la consistencia de los datos guardados en la tablet antes de ser procesados por la lógica del semáforo.
-  - Se validó el procesamiento ordenado de la cola de sincronización devolviendo las salidas esperadas.
+La DUIA ya está en `docs/duia_facundo.md`. Queda completar los datos de OpenCode (ver nota) y la unificación de la bitácora de IA, que hace Mariano al final.
 
 ---
 
-## 4. Próximos Pasos
+## Nota de revisión del equipo (Mariano Chirino, 05/11/2026)
 
-* Unificar los aportes individuales en el documento final.
-* Elaborar la sección **DUIA** (Documentación Individual de Uso y Análisis) integrando las reflexiones técnicas alcanzadas durante la práctica.
+Esta nota la agrega Mariano al integrar el PR #2. El resto del texto es de Facundo, con las correcciones señaladas.
+
+- **Comprobaciones.** Mariano repitió H36, H01, H04 y R1 en su máquina (PostgreSQL 17.10, SQLite 3.54.1); las salidas están en `evidencias/15`, `16` y `17`.
+  El script de H01 y R1 es `postgresql/verificar_hallazgos_3c.sql`.
+- **Lo que no consta por escrito**, según lo que dejó Facundo, y no hay logs adjuntos: modelo y proveedor de OpenCode, el prompt, la fecha de la corrida,
+  cuántos hallazgos propuso en total la IA, cuáles de H01 y R1 salieron de OpenCode y cuáles de otra fuente, la versión de PostgreSQL con la que corrió
+  (la 3.c borrador decía 16) y las salidas de C2 a C6 de su revisión F2. Si Facundo los aporta, se agregan firmados por él; hasta entonces no se completan.
