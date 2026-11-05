@@ -36,9 +36,9 @@ Según `DIVISION_DE_TRABAJO.md`:
 
 | Qué revisé | En qué servidor lo ejecuté | Qué encontré |
 |---|---|---|
-| `1a`, `3a` y `3b` de Andrés (PR #1) | Contra `schema.sql` y `esquema_documental.md` (lectura y comparación, sin motor) | Los errores de la fila anterior; corregidos por mí. Quedó pendiente confirmar las frecuencias de la `3b` con el plan de la Unidad 6. |
+| `1a`, `3a` y `3b` de Andrés (PR #1) | Contra `schema.sql` y `esquema_documental.md` (lectura y comparación, sin motor) | Los errores de la fila anterior; corregidos por mí. Las frecuencias de la `3b` las contrasté después con el informe de la Unidad 6 (ver la fila siguiente). |
 | Resultados de la A4 de Andrés | PostgreSQL 17.10 (`foodstore_u8`) | Coinciden con los míos: 16/16 en la vista y 6 pedidos, 13 detalles, stock 454 y la misma huella antes y después. No corrió las pruebas de la tablet, C2 a C6 ni `verificar_vistas_tablet.sql`; los cubren mis evidencias. |
-| `3b` contra `protocolo_seguridad.md` | Lectura | El protocolo fija el respaldo antes de un cambio estructural, pero no fija respaldo diario ni prueba semanal. Esas frecuencias no tienen todavía respaldo en ningún documento del repo. |
+| `3b` contra `SPEC_U6.md`, `informe_u6.pdf` y `protocolo_seguridad.md` | Lectura | Las frecuencias del borrador de Andrés (respaldo diario, restauración de prueba semanal) coinciden con la spec de la U6. Agregué lo que el informe aporta: al 21/10/2026 el respaldo era manual (sin tarea programada) y `pg_dump` no incluye roles ni permisos. |
 
 ## Mediciones (valores observados, no estimados)
 
@@ -59,6 +59,7 @@ Según `DIVISION_DE_TRABAJO.md`:
 | 04/11/2026 | `git status` mostraba modificados `.gitattributes`, `.kiro/.../.config.kiro` y 13 archivos de `evidencias/` | Cambios de fin de línea de Windows (en `.gitattributes` la regla quedó con un `\r`). Comprobé con `git diff --ignore-space-at-eol --stat` que en `evidencias/` no había diferencias de contenido | `git restore` de esos archivos; no se commitearon |
 | 04/11/2026 | `git push` rechazado (`fetch first`) | El merge hecho desde la web creó en GitHub un commit que yo no tenía, con el `.db` vacío, `sqlite/` y los borradores de Andrés | `git merge -s ours origin/main` para registrar ese commit sin traer sus archivos; luego push |
 | 04/11/2026 | La `3a` decía 5 pedidos migrados a MongoDB | Arrastré el valor del borrador de Andrés sin contrastarlo con `esquema_documental.md` | Corregido a 7 y subido |
+| `[completar fecha]` | Dudé de las frecuencias de la `3b` (respaldo diario, prueba semanal) porque el plan de la U6 no estaba en el repo | Revisé primero solo el informe y el protocolo, que no las fijan. En un primer ajuste quité la «prueba semanal» y escribí que el plan no fijaba frecuencia: era un error, porque `SPEC_U6.md` sí la fija | Con `SPEC_U6.md` a la vista: diario para el respaldo y semanal para la restauración de prueba, igual que el borrador de Andrés. Restauré el «semanal» en la `3b` |
 
 ## Decisiones tomadas
 
