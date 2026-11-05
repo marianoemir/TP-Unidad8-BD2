@@ -5,7 +5,7 @@ Food Store usa tres motores. **PostgreSQL es la única fuente de verdad**: ningu
 | Motor | Dónde vive | Qué guarda | Quién manda |
 |---|---|---|---|
 | **PostgreSQL** | Servidor (`foodstore`; `foodstore_u8` en las pruebas) | Catálogo (`producto`, `categoria`), usuarios, `pedido` y `detalle_pedido`, stock. Publica la vista `v_snapshot_movil` | **Fuente de verdad.** Decide precio, stock y ventas; solo `sp_crear_pedido` confirma una venta, y vuelve a validar el stock con `SELECT … FOR UPDATE` |
-| **MongoDB** (Unidad 7) | Base `foodstore_nosql` | Colección `pedidos`: cada pedido como un documento, con el cliente y las líneas embebidos (5 pedidos migrados: 1, 2, 3, 5 y 6; el 4 está dado de baja) | **Solo sobre esos documentos.** Es una copia migrada desde PostgreSQL para lectura de pedidos completos; no decide stock, precio ni ventas |
+| **MongoDB** (Unidad 7) | Base `foodstore_nosql` | Colección `pedidos`: cada pedido como un documento, con el cliente y las líneas embebidos (7 pedidos migrados: 1, 2, 3, 5 y 6 de `data.sql`, más el 7 y el 8 creados con `sp_crear_pedido` solo para la Unidad 7; el 4 está dado de baja y no se migró) | **Solo sobre esos documentos.** Es una copia migrada desde PostgreSQL para lectura de pedidos completos; no decide stock, precio ni ventas |
 | **SQLite** (Unidad 8) | Archivo `movil/foodstore_movil.db`, en la tablet | Copia del catálogo con fecha (`producto_cache`), borradores (`pedido_borrador`, `item_borrador`) y la cola de envío con su resultado (`cola_sync`) | **Nadie:** solo consulta y prepara. El semáforo simula la validación; `SIMULADO_APROBADO` no es una venta |
 
 **Quién manda sobre cada dato**
