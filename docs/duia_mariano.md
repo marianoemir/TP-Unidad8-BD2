@@ -29,6 +29,12 @@
 | Kiro | Generar `requirements.md`, `design.md` y `tasks.md` | **Se escribió después de los scripts, no antes** (el enunciado pide lo contrario). **Corregido en `requirements.md`:** el criterio 4 del Requisito 3 decía que el semáforo marca `eliminado = 1` en `producto_cache`; eso lo hace la recarga del catálogo, no el semáforo. **Corregido en `design.md`:** exportaba con `COPY producto` en lugar de la vista `v_snapshot_movil`; inventaba un transporte "llave USB / correo"; tenía invertida la fila de los booleanos y decía que la transacción hace rollback sola. **Descartado:** las pruebas de propiedades con Hypothesis (alcance de más: el TP no exige Python) y el límite de 255 caracteres en `motivo`, que el semáforo no impone. |
 | Claude | Revisar lo que generó Kiro contra los scripts y las evidencias | Detectó los errores anteriores y que la tabla de pruebas del diseño no mencionaba `pruebas_sqlite.sql` (C1 y C7). Se corrigió. |
 
+### Revisión del trabajo de un compañero (PR #1 de Andrés Fabre)
+
+| Herramienta | Para qué se usó | Se aceptó / se descartó — por qué |
+|---|---|---|
+| Claude | Revisar el pull request: clonar la rama, leer los archivos y probar los scripts | **Descartado del PR:** la carpeta `sqlite/` y los dos `tp8_database.db` (un esquema de ejemplo con `precio REAL`, sin `STRICT` ni centavos, que acepta texto como precio: no es el esquema del TP), y el `movil/foodstore_movil.db` vacío, que habría pisado la base con la evidencia de los casos. **Corregido:** 1.a, 3.a y 3.b tenían columnas inexistentes, ubicaban la cola en PostgreSQL, describían MongoDB como metadatos de productos y daban autoridad local a SQLite; se reescribieron contra el esquema real y `v_snapshot_movil`, y cada archivo lo aclara. Se verificó cada dato contra `schema.sql` y `esquema_documental.md`. |
+
 ---
 
 ## Verificación sobre el motor real
