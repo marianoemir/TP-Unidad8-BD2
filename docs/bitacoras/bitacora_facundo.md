@@ -37,6 +37,20 @@
 - Caso propio: se insertó un borrador de prueba y la base rechazó `item_borrador.precio_centavos_visto` nulo con `NOT NULL constraint failed`.
   *[corregido]* Esto verifica el esquema (`STRICT` y `NOT NULL`), no la lógica del semáforo: **no cuenta como caso del semáforo**.
 
+**Casos borde del semáforo (ejecutados por Mariano, 05/11/2026, no por Facundo).** Para cubrir lo que el caso propio no probaba, Mariano corrió
+`movil/casos_f2_semaforo.sql` sobre una copia de la base de la tablet (salidas en `evidencias/18` y `19`):
+
+| Caso | Qué se probó | Resultado del semáforo |
+|---|---|---|
+| F2-1 | Rojo y amarillo en el mismo borrador (cambió el precio de la Muzzarella y piden 10 Tiramisú, quedan 6) | `RECHAZADO`, motivo solo del rojo: gana el rojo |
+| F2-2 | Producto que no está en la instantánea (id 99) | `RECHAZADO`: el producto no existe en el servidor (no pasa como verde) |
+| F2-3 | Borrador sin ítems | `RECHAZADO`: borrador sin ítems |
+| F2-4 | Producto no disponible (id 15) | `RECHAZADO`: no disponible |
+| F2-5 | Control: todo coincide | `SIMULADO_APROBADO` (no es una venta) |
+| F2-6 | Segunda solicitud `PENDIENTE` del mismo borrador | Error `UNIQUE constraint failed: cola_sync.id_local` (índice parcial `ux_cola_una_pendiente`) |
+
+En la misma corrida `solicitudes_evaluadas` dio 5: las solicitudes de C2 a C5 conservaron su `evaluada_en` anterior, es decir, el semáforo evalúa solo las `PENDIENTE`.
+
 ## 4. Próximos pasos *[corregido]*
 
 La DUIA ya está en `docs/duia_facundo.md`. Queda completar los datos de OpenCode (ver nota) y la unificación de la bitácora de IA, que hace Mariano al final.

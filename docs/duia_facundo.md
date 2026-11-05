@@ -31,6 +31,7 @@
 ## 3. Evaluación del semáforo (F2)
 
 - **Evaluación local.** El semáforo clasifica con la instantánea guardada (`producto_cache` y `snapshot_servidor`) sin conexión al servidor.
+- **Casos borde.** La precedencia y los demás casos de borde (producto fuera de la instantánea, borrador sin ítems, producto no disponible, dos pendientes del mismo borrador) los ejecutó Mariano en `movil/casos_f2_semaforo.sql` (`evidencias/18` y `19`); no figuran logs de Facundo.
 - **Precedencia.** El rojo gana sobre el amarillo. *[corregido]* Son rojos (`RECHAZADO`): producto inexistente, no disponible, dado de baja o sin stock suficiente.
   Es amarillo (`CONFLICTO`): un precio que cambió, **sin umbral** (cualquier diferencia cuenta). Verde: `SIMULADO_APROBADO`, que **no es una venta**.
 - **Asimetría H01.** *[corregido]* La vista `v_snapshot_movil` exporta como lápida (`eliminado = t`) los productos de categorías eliminadas, así que la tablet los rechaza; el procedimiento

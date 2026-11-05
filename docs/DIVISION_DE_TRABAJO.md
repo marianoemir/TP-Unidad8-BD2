@@ -16,16 +16,19 @@ campus. **No hay entregas tardías**: la semana 14 es el segundo parcial.
 
 **Todos** arman su entorno (H0) y completan **su propia bitácora y su propia DUIA** (sección 9).
 
-## 2. Estado actual (03/11/2026)
+## 2. Estado actual (05/11/2026)
 
 | Tarea | Estado |
 |---|---|
 | Consignas 1 y 2 (`movil/` y `postgresql/`) corridas en la máquina de Mariano, con evidencia en `evidencias/`, y subidas a `main` | Hecho |
 | Spec de Kiro (4.a) en `docs/kiro/` y texto de 2.c en `docs/partes/2c_casos.md` | Hecho |
-| Corrida completa en la máquina de Andrés y de Facundo (H0 y revisiones cruzadas) | Por hacer |
-| 1.a, 3.a, 3.b, 3.c | Por hacer |
-| Bitácora y DUIA de cada integrante | Por hacer (cada uno la suya) |
-| Informe PDF y README final | Se dejan para el final |
+| Protocolo de seguridad, paso 5 (equivalencia de las vistas): `evidencias/13` y `14` | Hecho |
+| 1.a, 3.a, 3.b (Andrés) | Hecho: borradores de Andrés corregidos por Mariano contra el esquema real (PR #1) |
+| 3.c (Facundo) | Hecho y corregido por Mariano contra `evidencias/15` a `17` (PR #2). Faltan los datos de OpenCode que solo Facundo conoce (modelo, prompt, fecha) |
+| Revisión cruzada del semáforo (F2) | Hecho con casos borde ejecutados por Mariano (`evidencias/18` y `19`); el caso propio de Facundo era del esquema, no del semáforo |
+| Corrida completa en la máquina de Andrés y de Facundo (H0 y revisiones cruzadas) | Parcial: no hay logs suyos en `evidencias/`; los resultados de Andrés para PostgreSQL coinciden con los de Mariano |
+| Bitácora y DUIA de cada integrante | Mariano y Andrés: hechas. Facundo: subida y corregida por Mariano, con datos pendientes de él |
+| Informe PDF, README final, bitácora de IA unificada y etiqueta `tp8` | Se dejan para el final |
 
 ### Datos ya definidos (para que nadie espere)
 

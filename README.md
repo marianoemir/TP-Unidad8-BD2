@@ -99,8 +99,9 @@ sqlite3 -header -column $db ".read movil/semaforo.sql"       # repetir: 0 solici
 | `postgresql/10_snapshot_catalogo.sql`, `11_exportar_snapshot.sql` | Vista `v_snapshot_movil` y exportación | 2.a |
 | `postgresql/casos/`, `verificar_no_cambio.sql` | Cambios del servidor por caso y prueba de que no se tocó nada | 2.c |
 | `postgresql/verificar_vista_snapshot.sql`, `movil/verificar_vistas_tablet.sql` | Equivalencia de la vista con la tabla y de la vista de la tablet con `producto_cache` (protocolo de seguridad, paso 5) | 2.a |
+| `movil/casos_f2_semaforo.sql` | Casos borde del semáforo (revisión cruzada F2): rojo + amarillo, producto fuera de la instantánea, sin ítems, no disponible. **Solo en una copia** de la tablet | 2.b |
 | `postgresql/verificar_hallazgos_3c.sql` | Comprobación de los hallazgos H01 y R1 del code review. **Solo en una copia** de la base | 3.c |
-| `evidencias/` | Salidas de cada comando (01 a 12: C1 a C7; 13 y 14: vistas; 15 a 17: code review) | todas |
+| `evidencias/` | Salidas de cada comando (01 a 12: C1 a C7; 13 y 14: vistas; 15 a 17: code review; 18 y 19: casos borde del semáforo) | todas |
 | `heredado/` | Scripts de las Unidades 1 a 7, entrada del code review (ver nota abajo) | 3.c |
 | `docs/` | Informe, spec de Kiro, bitácora de IA, DUIA y `DIVISION_DE_TRABAJO.md` (quién hace qué y en qué orden) | 3 y 4 |
 
