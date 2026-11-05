@@ -45,11 +45,11 @@ Formato de cada entrada: **qué se pidió · qué se aceptó · qué se descart�
 - **Qué se descartó y por qué:** H36 (falso) y H04 (irrelevante con 13 filas); ver entrada 5.
 - **Cómo se comprobó:** las comprobaciones que respaldan la decisión son las de Mariano. **Según lo que dejó escrito, no hay logs adjuntos** de las corridas de Facundo, y **no consta** el modelo ni el proveedor de OpenCode, el prompt, la fecha, cuántos hallazgos devolvió en total la IA ni cuáles de H01 y del producto repetido salieron de OpenCode.
 
-### 7 · Andrés — Gemini: documentos 1.a, 3.a y 3.b, y revisión cruzada A4
+### 7 · Andrés — Gemini y OpenCode: documentos 1.a, 3.a y 3.b, y revisión cruzada A4
 - **Qué se pidió:** redactar los entregables 1.a, 3.a y 3.b; diagnosticar el error `table producto_cache already exists`; interpretar el hash MD5 de `verificar_no_cambio.sql`.
 - **Qué se aceptó:** según su bitácora, el borrador de los tres documentos («aceptado totalmente»), el consejo de borrar el `.db` antes de recrear la tabla y la explicación del hash.
 - **Qué se descartó y por qué:** los tres documentos no sobrevivieron a la revisión contra el esquema real (ver entrada 4): quedaron reescritos por Mariano. Su carpeta `sqlite/` no se integró.
-- **Cómo se comprobó:** según lo que dejó escrito, corrió `verificar_vista_snapshot.sql` (16 contra 16) y `verificar_no_cambio.sql` (6 pedidos, 13 detalles, stock 454, misma huella): coincide con las mediciones de Mariano. **No hay logs adjuntos** suyos en `evidencias/`; no consta que haya corrido las pruebas de la tablet, C2 a C6 ni `verificar_vistas_tablet.sql`.
+- **Cómo se comprobó:** según lo que dejó escrito, corrió `verificar_vista_snapshot.sql` (16 contra 16) y `verificar_no_cambio.sql` (6 pedidos, 13 detalles, stock 454, misma huella): coincide con las mediciones de Mariano. **Actualización del 05/11 (PR #3):** completó la revisión A4 desde cero en una copia (`evidencias/20`: pruebas de la tablet, C2 a C6, vistas y no cambio) y revisó la 3.c (`evidencias/21`: H36 y H04 descartados, H01 y R1 aceptados). Los resultados coinciden con los de Mariano. Según su declaración lo hizo con OpenCode (asistente GPT-5.6 Terra); no hay logs de la conversación con la IA adjuntos, solo las salidas de los comandos.
 
 ## Mediciones
 

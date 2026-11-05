@@ -8,7 +8,7 @@ las bitácoras individuales, en `docs/bitacoras/`.
 | Integrante | Declaración individual | Resumen |
 |---|---|---|
 | Mariano Chirino | [`duia_mariano.md`](duia_mariano.md) | Claude (versión web), NotebookLM y Kiro. No usó OpenCode |
-| Andrés Fabre | [`duia_andres.md`](duia_andres.md) | Gemini (Gemini 3 Flash, web, plan gratuito) para redactar 1.a, 3.a y 3.b y diagnosticar errores de CLI |
+| Andrés Fabre | [`duia_andres.md`](duia_andres.md) | Gemini (1.a, 3.a, 3.b y diagnóstico de errores) y, según declara, OpenCode / GPT-5.6 Terra para la revisión A4 completa y el contraste de 3.c (05/11) |
 | Facundo Quiroga | [`duia_facundo.md`](duia_facundo.md) | OpenCode (agente Plan) para el code review de la 3.c |
 
 **Criterio de este documento:** lo que cada integrante no dejó escrito (por ejemplo, el modelo y el prompt de OpenCode, o los logs de una corrida)
@@ -129,12 +129,21 @@ Ninguna propuesta de la IA se incorporó sin leerla y correrla.
   > *"Al ejecutar `postgresql/verificar_no_cambio.sql` me dio 6 pedidos, 13 detalles, 454 stock total y el hash MD5 `89f8351d0162e23ef1473f32b05ce221`, ¿es normal?"*
 * **Resultado / Aceptación:** Se aceptó la explicación de la IA que confirmó el cumplimiento de la prueba de integridad mediante la preservación del estado inicial.
 
+##### Interacción 4: Revisión completa A4 y contraste de 3.c
+* **Fecha:** 05/11/2026.
+* **Herramienta:** OpenCode / asistente GPT-5.6 Terra.
+* **Objetivo:** Completar la revisión cruzada pendiente: reproducir el flujo desde cero (H0, C1, C7 y C2 a C6), verificar las dos vistas y revisar los hallazgos de 3.c con sus evidencias.
+* **Prompt representativo:**
+  > *"Revisá mi parte del TP8 contra la división, ejecutá la revisión cruzada pendiente desde cero sobre una copia y verificá los hallazgos documentados de 3.c sin modificar los scripts funcionales."*
+* **Resultado / Aceptación:** Se aceptaron únicamente los resultados obtenidos en los motores: H0 dio 6 / 16 / 6; C2 a C6 y C1/C7 dieron los resultados esperados; las vistas no tuvieron diferencias; pedidos y stock no cambiaron. H36 y H04 se descartaron con fundamento; H01 y R1 se confirmaron como hallazgos documentados. Las salidas se guardaron en `evidencias/20_andres_revision_a4_completa.txt` y `evidencias/21_andres_revision_3c.txt`.
+
 ---
 
 #### 3. Metodología de Verificación y Control Humano
 
 1. **Lectura y revisión de código/texto:** Ninguna propuesta redactada por la IA se incorporó al repositorio sin una lectura y edición previa para garantizar consistencia con los requerimientos específicos de la materia.
-2. **Prueba directa en motor de base de datos:** Las consultas de verificación y comandos CLI fueron ejecutados manualmente en la consola de Windows 11 sobre PostgreSQL 16 y SQLite 3.37+, asegurando que las salidas (`0 filas` en diferencias y hashes idénticos) comprobaran empíricamente el correcto funcionamiento del sistema.
+2. **Prueba directa en motor de base de datos:** Las consultas de verificación y comandos CLI fueron ejecutados manualmente en la consola de Windows 11 sobre PostgreSQL 17.11 y SQLite 3.54.1, asegurando que las salidas (`0 filas` en diferencias y hashes idénticos) comprobaran empíricamente el correcto funcionamiento del sistema.
+3. **Actualización del 05/11/2026:** La corrida completa se hizo en copias descartables: PostgreSQL 17.11 y SQLite CLI 3.54.1 (biblioteca Python 3.50.4). No se modificó la base de trabajo del equipo ni scripts funcionales.
 
 ---
 
@@ -142,7 +151,7 @@ Ninguna propuesta de la IA se incorporó sin leerla y correrla.
 
 Declaro haber utilizado la Inteligencia Artificial de forma transparente y colaborativa como apoyo pedagógico y técnico, asumiendo la responsabilidad total sobre los contenidos, validaciones y conclusiones presentadas en mis entregables individuales del TP 8.
 
-**Firma:** Andrés Fabre  
+**Firma:** Andrés Fabre
 **Fecha:** 04 de Noviembre de 2026
 
 ---
@@ -157,6 +166,15 @@ Esta nota la agrega Mariano al integrar el PR #1. La declaración anterior es de
 - La carpeta `sqlite/` y los archivos `tp8_database.db` no son parte de la entrega: eran un esquema de ejemplo distinto del esquema del TP.
 - Las interacciones 2 y 3 (error de `already exists` e interpretación de la huella) se corresponden con la revisión cruzada A4, cuyos resultados
   coinciden con los de Mariano.
+
+---
+
+#### Actualización firmada — 05/11/2026
+
+La Interacción 4 completa y evidencia la revisión A4 que antes estaba documentada solo de manera parcial. Mantengo la nota de Mariano para distinguir con transparencia los borradores originales de 1.a, 3.a y 3.b de sus versiones corregidas presentes en el repositorio.
+
+**Firma:** Andrés Fabre
+**Fecha de actualización:** 05 de Noviembre de 2026
 
 ---
 
